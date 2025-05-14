@@ -1,12 +1,16 @@
 import ServiceCard from './ServiceCard'
+import type { IService } from '../../types/service'
 
-function ServicesList() {
+type ServicesListProps = {
+  services: IService[]
+}
+
+function ServicesList({ services }: ServicesListProps) {
   return (
     <div className="flex flex-col gap-2 overflow-scroll h-full">
-      <ServiceCard />
-      <ServiceCard />
-      <ServiceCard />
-      <ServiceCard />
+      {services.map((service) => (
+        <ServiceCard key={service._id} service={service} />
+      ))}
     </div>
   )
 }
