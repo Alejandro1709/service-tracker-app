@@ -9,3 +9,5 @@ export interface IService {
 }
 
 export type CreateServiceType = Pick<IService, 'name' | 'description'>
+
+export type EditServiceType = Pick<IService, 'name' | 'description'>
