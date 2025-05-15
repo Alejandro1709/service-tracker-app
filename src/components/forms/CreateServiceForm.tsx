@@ -1,6 +1,49 @@
+import { useForm } from 'react-hook-form'
+import type { CreateServiceType } from '../../types/service'
+import { useServiceStore } from '../../stores/serviceStore'
+import { createService } from '../../services/services'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
+
 function CreateServiceForm() {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<CreateServiceType>({
+    defaultValues: {
+      name: '',
+      description: '',
+    },
+  })
+
+  const services = useServiceStore((state) => state.services)
+  const setServices = useServiceStore((state) => state.setServices)
+
+  const navigate = useNavigate()
+
+  const handleCreateService = (formData: CreateServiceType) => {
+    createService(formData)
+      .then((data) => {
+        setServices([...services, data.service])
+
+        reset()
+
+        toast.success('Service added!')
+
+        navigate(`/services/${data.service._id}`)
+      })
+      .catch((err) => {
+        toast.error(err.message)
+      })
+  }
+
   return (
-    <form className="flex flex-col gap-2" onSubmit={() => {}}>
+    <form
+      className="flex flex-col gap-2"
+      onSubmit={handleSubmit(handleCreateService)}
+    >
       <div className="flex flex-col gap-2">
         <label htmlFor="name">Name:</label>
         <input
@@ -8,8 +51,13 @@ function CreateServiceForm() {
           id="name"
           type="text"
           placeholder="Luz Del Sur"
+          {...register('name', {
+            required: 'A service must have a name',
+          })}
         />
-        <p>Error will be here</p>
+        {errors.name ? (
+          <p className="text-red-400">{errors.name.message}</p>
+        ) : null}
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="description">Description:</label>
@@ -18,8 +66,11 @@ function CreateServiceForm() {
           id="description"
           type="text"
           placeholder="Servicio de luz"
+          {...register('description')}
         />
-        <p>Error will be here</p>
+        {errors.description ? (
+          <p className="text-red-400">{errors.description.message}</p>
+        ) : null}
       </div>
       <div className="flex flex-row gap-2 mt-4">
         <button

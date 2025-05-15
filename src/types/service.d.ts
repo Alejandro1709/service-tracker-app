@@ -7,3 +7,5 @@ export interface IService {
   createdAt: Date
   updatedAt: Date
 }
+
+export type CreateServiceType = Pick<IService, 'name' | 'description'>
