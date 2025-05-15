@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
 import Sidebar from './components/Sidebar'
 import { getServices } from './services/services'
+import { toast, ToastContainer } from 'react-toastify'
+import { useServiceStore } from './stores/serviceStore'
 
 function App() {
   const [services, setServices] = useState([])
+
+  const selected = useServiceStore((state) => state.selected)
 
   useEffect(() => {
     getServices()
@@ -12,6 +16,9 @@ function App() {
       })
       .catch((err) => {
         console.log(err)
+        toast.error(err.message, {
+          toastId: 'super-id-3',
+        })
       })
   }, [])
 
@@ -21,9 +28,10 @@ function App() {
         <Sidebar services={services} />
 
         <main className="bg-white flex-1 p-4 rounded">
-          <div className="">Luz Del Sur</div>
+          <div className="">{selected?.name}</div>
         </main>
       </div>
+      <ToastContainer position="top-right" />
     </div>
   )
 }
