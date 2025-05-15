@@ -1,36 +1,33 @@
-import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useServiceStore } from '../stores/serviceStore'
 import ServicesList from './services/ServicesList'
 
 function Sidebar() {
+  const { slug } = useParams()
+
   const services = useServiceStore((state) => state.services)
-  const [searchParams] = useSearchParams()
-
-  const [selectedId, setSelectedId] = useState<string>('')
-
-  useEffect(() => {
-    setSelectedId(searchParams.get('service') || 'null')
-  }, [searchParams])
 
   return (
     <>
       <aside className="bg-white hidden lg:flex flex-col gap-4 lg:w-80 p-4 lg:rounded-md">
         <div className="flex gap-2">
-          <button className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]">
+          <Link
+            to={'/services/new'}
+            className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]"
+          >
             Add
-          </button>
+          </Link>
 
-          {searchParams.has('service') ? (
-            <>
-              <button className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]">
-                Edit
-              </button>
-              <button className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]">
-                Delete
-              </button>
-            </>
-          ) : null}
+          <Link
+            to={`/services/${slug}/edit`}
+            className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]"
+          >
+            Edit
+          </Link>
+
+          <button className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]">
+            Delete
+          </button>
         </div>
 
         <ServicesList services={services} />
