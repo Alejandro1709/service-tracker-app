@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
-import Sidebar from './components/Sidebar'
-import { getServices } from './services/services'
+import { useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
-import { useServiceStore } from './stores/serviceStore'
+import Sidebar from '../components/Sidebar'
+import { useServiceStore } from '../stores/serviceStore'
+import { getServices } from '../services/services'
 
-function App() {
-  const [services, setServices] = useState([])
+function HomePage() {
+  const setServices = useServiceStore((state) => state.setServices)
 
   const selected = useServiceStore((state) => state.selected)
 
@@ -25,7 +25,7 @@ function App() {
   return (
     <div className="flex flex-col lg:justify-center lg:items-center min-h-screen bg-[#F5F7FD]">
       <div className="flex flex-col lg:flex-row lg:gap-4 lg:p-4 lg:h-[679px] lg:w-2/4">
-        <Sidebar services={services} />
+        <Sidebar />
 
         <main className="bg-white flex-1 p-4 rounded">
           <div className="">{selected?.name}</div>
@@ -36,4 +36,4 @@ function App() {
   )
 }
 
-export default App
+export default HomePage

@@ -1,11 +1,18 @@
-import type { IService } from '../types/service'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { useServiceStore } from '../stores/serviceStore'
 import ServicesList from './services/ServicesList'
 
-type SidebarProps = {
-  services: IService[]
-}
+function Sidebar() {
+  const services = useServiceStore((state) => state.services)
+  const [searchParams] = useSearchParams()
 
-function Sidebar({ services }: SidebarProps) {
+  const [selectedId, setSelectedId] = useState<string>('')
+
+  useEffect(() => {
+    setSelectedId(searchParams.get('service') || 'null')
+  }, [searchParams])
+
   return (
     <>
       <aside className="bg-white hidden lg:flex flex-col gap-4 lg:w-80 p-4 lg:rounded-md">
@@ -13,13 +20,19 @@ function Sidebar({ services }: SidebarProps) {
           <button className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]">
             Add
           </button>
-          <button className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]">
-            Edit
-          </button>
-          <button className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]">
-            Delete
-          </button>
+
+          {searchParams.has('service') ? (
+            <>
+              <button className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]">
+                Edit
+              </button>
+              <button className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]">
+                Delete
+              </button>
+            </>
+          ) : null}
         </div>
+
         <ServicesList services={services} />
       </aside>
 
