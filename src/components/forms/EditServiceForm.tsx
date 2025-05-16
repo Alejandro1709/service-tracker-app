@@ -6,12 +6,12 @@ import { updateService } from '../../services/services'
 import { toast } from 'react-toastify'
 
 function EditServiceForm() {
-  const { slug } = useParams()
+  const { id } = useParams()
 
   const services = useServiceStore((state) => state.services)
   const setServices = useServiceStore((state) => state.setServices)
 
-  const service = services.find((s) => s.slug === slug)
+  const service = services.find((s) => s._id === id)
 
   const {
     register,
@@ -28,12 +28,12 @@ function EditServiceForm() {
   const navigate = useNavigate()
 
   const handleEditService = (formData: EditServiceType) => {
-    if (!slug) return
+    if (!id) return
 
-    updateService(slug, formData)
+    updateService(id, formData)
       .then((data) => {
         const updated = services.map((s) =>
-          s.slug === slug ? { ...data.service } : { ...s }
+          s._id === id ? { ...data.service } : { ...s }
         )
 
         setServices(updated)

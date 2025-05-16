@@ -5,22 +5,22 @@ import { deleteService } from '../services/services'
 import { toast } from 'react-toastify'
 
 function Sidebar() {
-  const { slug } = useParams()
+  const { id } = useParams()
 
   const services = useServiceStore((state) => state.services)
   const setServices = useServiceStore((state) => state.setServices)
 
   const navigate = useNavigate()
 
-  const handleDeleteService = (slug: string | undefined) => {
+  const handleDeleteService = (id: string | undefined) => {
     const confirmation = confirm('Are you sure?')
 
-    const filtered = services.filter((s) => s.slug !== slug)
+    const filtered = services.filter((s) => s._id !== id)
 
     if (confirmation) {
-      if (!slug) return
+      if (!id) return
 
-      deleteService(slug)
+      deleteService(id)
         .then((data) => {
           console.log(data)
           setServices(filtered)
@@ -47,7 +47,7 @@ function Sidebar() {
           </Link>
 
           <Link
-            to={`/services/${slug}/edit`}
+            to={`/services/${id}/edit`}
             className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]"
           >
             Edit
@@ -55,7 +55,7 @@ function Sidebar() {
 
           <button
             className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]"
-            onClick={() => handleDeleteService(slug)}
+            onClick={() => handleDeleteService(id)}
           >
             Delete
           </button>

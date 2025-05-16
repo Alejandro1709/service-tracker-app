@@ -14,9 +14,9 @@ export const getServices = async () => {
   }
 }
 
-export const getService = async (slug: string) => {
+export const getService = async (id: string) => {
   try {
-    const { data } = await api.get(`/api/v1/services/${slug}`)
+    const { data } = await api.get(`/api/v1/services/${id}`)
 
     return data
   } catch (error) {
@@ -38,12 +38,9 @@ export const createService = async (formData: CreateServiceType) => {
   }
 }
 
-export const updateService = async (
-  slug: string,
-  formData: EditServiceType
-) => {
+export const updateService = async (id: string, formData: EditServiceType) => {
   try {
-    const { data } = await api.put(`/api/v1/services/${slug}`, formData)
+    const { data } = await api.put(`/api/v1/services/${id}`, formData)
 
     return data
   } catch (error) {
@@ -53,9 +50,9 @@ export const updateService = async (
   }
 }
 
-export const deleteService = async (slug: string) => {
+export const deleteService = async (id: string) => {
   try {
-    const { data } = await api.delete(`/api/v1/services/${slug}`)
+    const { data } = await api.delete(`/api/v1/services/${id}`)
 
     return data
   } catch (error) {

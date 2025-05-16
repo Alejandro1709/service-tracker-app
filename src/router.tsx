@@ -12,8 +12,8 @@ function Router() {
         <Route element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/services/new" element={<NewServicePage />} />
-          <Route path="/services/:slug" element={<ServicePage />} />
-          <Route path="/services/:slug/edit" element={<EditServicePage />} />
+          <Route path="/services/:id" element={<ServicePage />} />
+          <Route path="/services/:id/edit" element={<EditServicePage />} />
         </Route>
       </Routes>
     </BrowserRouter>
