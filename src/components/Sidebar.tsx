@@ -1,11 +1,39 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useServiceStore } from '../stores/serviceStore'
 import ServicesList from './services/ServicesList'
+import { deleteService } from '../services/services'
+import { toast } from 'react-toastify'
 
 function Sidebar() {
   const { slug } = useParams()
 
   const services = useServiceStore((state) => state.services)
+  const setServices = useServiceStore((state) => state.setServices)
+
+  const navigate = useNavigate()
+
+  const handleDeleteService = (slug: string | undefined) => {
+    const confirmation = confirm('Are you sure?')
+
+    const filtered = services.filter((s) => s.slug !== slug)
+
+    if (confirmation) {
+      if (!slug) return
+
+      deleteService(slug)
+        .then((data) => {
+          console.log(data)
+          setServices(filtered)
+
+          toast.success('Service removed!')
+
+          navigate('/')
+        })
+        .catch((err) => {
+          toast.error(err.message)
+        })
+    }
+  }
 
   return (
     <>
@@ -25,7 +53,10 @@ function Sidebar() {
             Edit
           </Link>
 
-          <button className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]">
+          <button
+            className="border py-1 px-2 bg-white text-[#3F2CAC] font-medium rounded cursor-pointer hover:opacity-80 border-[#E7E7E7]"
+            onClick={() => handleDeleteService(slug)}
+          >
             Delete
           </button>
         </div>

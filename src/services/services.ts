@@ -52,3 +52,15 @@ export const updateService = async (
     }
   }
 }
+
+export const deleteService = async (slug: string) => {
+  try {
+    const { data } = await api.delete(`/api/v1/services/${slug}`)
+
+    return data
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error
+    }
+  }
+}

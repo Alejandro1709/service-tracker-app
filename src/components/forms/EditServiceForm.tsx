@@ -32,7 +32,11 @@ function EditServiceForm() {
 
     updateService(slug, formData)
       .then((data) => {
-        setServices([...services, data.service])
+        const updated = services.map((s) =>
+          s.slug === slug ? { ...data.service } : { ...s }
+        )
+
+        setServices(updated)
 
         reset()
 
